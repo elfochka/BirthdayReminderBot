@@ -3,7 +3,7 @@ import time
 import pymysql.cursors
 from telebot import types
 
-print('@ElfochkaBirthdayReminderBot запущен')
+print('@BirthdayReminderBot запущен')
 
 # Connect to the database
 
@@ -32,20 +32,37 @@ new_birthday_name = ''
 new_birthday_date = ''
 new_remind_or_not = False
 new_reminder_period = 0
+new_user_name = ''
+
+hello_message = 'Привет! Я - Бот напоминалка о днях рождения!'
+help_message = 'Введи /add для добавления новой записи\n' \
+               'Введи /list для просмотра всех твоих записей'
 
 
 @bot.message_handler(content_types=['text'])
-def start(message=''):
-    # if message.text == '/start':
-    #     my_text = ('@ElfochkaBirthdayReminderBot запущен' + '\nПользователь: @' + str(
-    #         message.from_user.username) + '\nПользователь: ' + str(message.from_user.id))
-    #     bot.send_message(my_group_id, my_text,timeout=1000)
+def start(message):
+    global new_user_name
+    new_user_name = message.from_user.username
+
+    # with connection.cursor() as cursor:
+    #     # Read a single record
+    #     sql = "SELECT id, password FROM users WHERE email=%s"
+    #     cursor.execute(sql, ('webmaster@python.org',))
+    #     result = cursor.fetchone()
+    #     print(result)
+    #
+    # bot.send_message(message.from_user.id, hello_message)
 
     if message.text == '/add':
         bot.send_message(message.from_user.id, 'Напиши имя именника')
         bot.register_next_step_handler(message, birthday_name)  # следующий шаг – функция birthday_name
     else:
-        bot.send_message(message.from_user.id, 'Напиши /add для добавления новой записи')
+        bot.send_message(message.from_user.id, help_message)
+
+
+# def repeat_start(from_user_id):
+#     print('test repeat')
+#     bot.send_message(from_user_id, help_message)
 
 
 def birthday_name(message):
@@ -97,33 +114,53 @@ def birthday_date(message):
     bot.send_message(message.from_user.id, text=question, reply_markup=keyboard)
 
 
-
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
+    # global new_birthday_name, new_birthday_date, new_user_name
     if call.data == "yes":  # call.data это callback_data, которую мы указали при объявлении кнопки
+        if new_user_name != '' or new_birthday_name != '' or new_birthday_date != '':
 
-        connection = pymysql.connect(host='31.31.198.35',
-                                     user='u1771772_default',
-                                     password='56f6hDDRxt96FSvu',
-                                     database='u1771772_default',
-                                     cursorclass=pymysql.cursors.DictCursor)
+            # new_birthday_name = ''
+            # new_birthday_date = ''
+            # new_remind_or_not = False
+            # new_reminder_period = 0
+            # new_user_name = ''
 
-        with connection:
-            with connection.cursor() as cursor:
-                # Create a new record
-                # sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
-                sql = "INSERT INTO `BirthdayReminderBot` (`user_id`, `birthday_name`, `birthday_date`) VALUES (%s, %s, %s)"
-                cursor.execute(sql, (
-                    call.message.chat.id, new_birthday_name, new_birthday_date))
+            connection = pymysql.connect(host='31.31.198.35',
+                                         user='u1771772_default',
+                                         password='56f6hDDRxt96FSvu',
+                                         database='u1771772_default',
+                                         cursorclass=pymysql.cursors.DictCursor)
 
-            # connection is not autocommit by default. So you must commit to save
-            # your changes.
-            connection.commit()
+            with connection:
+                with connection.cursor() as cursor:
+                    # Create a new record
+                    # sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
+                    sql = "INSERT INTO `BirthdayReminderBot` (`user_id`, `birthday_name`, `birthday_date`, `user_name`) VALUES (%s, %s, %s, %s)"
+                    cursor.execute(sql, (
+                        call.message.chat.id, new_birthday_name, new_birthday_date, ('@' + new_user_name)))
 
-        bot.send_message(call.message.chat.id, 'Я всё запомнил');
+                # connection is not autocommit by default. So you must commit to save
+                # your changes.
+                connection.commit()
+
+            bot.send_message(call.message.chat.id, 'Я всё запомнил')
+
+        else:
+            bot.send_message(call.message.chat.id, 'Не заполнено имя или дата. Давай сначала')
+
     elif call.data == "no":
-        bot.send_message(call.from_user.id, 'Тогда давай сначала')
-        start()
+        bot.send_message(call.message.chat.id, 'Тогда давай сначала')
+
+    bot.send_message(call.message.chat.id, help_message)
+
+    # repeat_start(call.message.chat.id)
+
+
+# def repeat_start(call):
+#     bot.send_message(call.message.chat.id, help_message)
+
+# bot.register_next_step_handler(message, birthday_name)  # следующий шаг – функция birthday_name
 
 
 # new_birthday_name = ''
@@ -155,6 +192,7 @@ def callback_worker(call):
 
 
 if __name__ == '__main__':
+
     while True:
         try:  # добавляем try для бесперебойной работы
             bot.polling(none_stop=True)  # запуск бота
