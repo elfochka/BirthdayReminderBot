@@ -2,193 +2,150 @@ import telebot
 import time
 import pymysql.cursors
 from telebot import types
+import schedule
 
 print('@BirthdayReminderBot запущен')
 
-# Connect to the database
-
-
-# with connection:
-#     with connection.cursor() as cursor:
-#         # Create a new record
-#         sql = "INSERT INTO `BirthdayReminderBot` (`user_id`, `birthday_name`) VALUES (%s, %s)"
-#         cursor.execute(sql, ('1111', 'very-secret'))
-#
-#     # connection is not autocommit by default. So you must commit to save
-#     # your changes.
-#     connection.commit()
-#
-#     with connection.cursor() as cursor:
-#         # Read a single record
-#         sql = "SELECT `user_id`, `birthday_name` FROM `BirthdayReminderBot` WHERE `user_id`=%s"
-#         cursor.execute(sql, ('1111',))
-#         result = cursor.fetchone()
-#         print(result)
-
+connection = pymysql.connect(host='31.31.198.35',
+                             user='u1771772_default',
+                             password='56f6hDDRxt96FSvu',
+                             database='u1771772_default',
+                             cursorclass=pymysql.cursors.DictCursor)
 
 bot = telebot.TeleBot("5464014913:AAEW7TYzUvNurSjsIT4xwuwf7KOKogmODIQ")  # токен бота
 
+new_entry_id = ''
 new_birthday_name = ''
 new_birthday_date = ''
 new_remind_or_not = False
 new_reminder_period = 0
 new_user_name = ''
+user_id = ''
 
 hello_message = 'Привет! Я - Бот напоминалка о днях рождения!'
 help_message = 'Введи /add для добавления новой записи\n' \
                'Введи /list для просмотра всех твоих записей'
 
+error_message = 'Что-то пошло не так. Давай сначала.'
+
+
+# def remind_congratulate():
+#     print('test 1')
+#     global connection
+#     print('test 2')
+#     with connection:
+#         with connection.cursor() as cur:
+#             sql = "SELECT * FROM `BirthdayReminderBot`"
+#             cur.execute(sql, (user_id,))
+#             result = cur.fetchall()
+#             for line in result:
+#
+#                 now_date = time.strftime('%d.%m', time.localtime())
+#
+#                 # print(now_date)
+#
+#                 if line['birthday_date'] == now_date:
+#                     congratulate_text = 'Сегодня ' + line['birthday_date'] + 'отмечает свой День Рождения ' + line[
+#                         'birthday_name']
+#
+#                     bot.send_message(line['user_id'], congratulate_text)
+
 
 @bot.message_handler(content_types=['text'])
 def start(message):
-    global new_user_name
+    global new_user_name, user_id
     new_user_name = message.from_user.username
 
-    # with connection.cursor() as cursor:
-    #     # Read a single record
-    #     sql = "SELECT id, password FROM users WHERE email=%s"
-    #     cursor.execute(sql, ('webmaster@python.org',))
-    #     result = cursor.fetchone()
-    #     print(result)
-    #
-    # bot.send_message(message.from_user.id, hello_message)
-
     if message.text == '/add':
-        bot.send_message(message.from_user.id, 'Напиши имя именника')
-        bot.register_next_step_handler(message, birthday_name)  # следующий шаг – функция birthday_name
+        bot.send_message(message.from_user.id, 'Добавь запись: Имя именника/дата рождения ДД.ММ')
+        bot.register_next_step_handler(message, add_new_entry)  # следующий шаг – функция add_new_entry
+    elif message.text == '/list':
+        user_id = message.from_user.id
+        bot.send_message(message.from_user.id, 'Все твои записи:')
+        # bot.register_next_step_handler(user_id, user_list)  # следующий шаг – функция user_list
+        user_list(user_id)
     else:
         bot.send_message(message.from_user.id, help_message)
 
 
-# def repeat_start(from_user_id):
-#     print('test repeat')
-#     bot.send_message(from_user_id, help_message)
+def add_new_entry(message):
+    global new_entry_id, new_birthday_name, new_birthday_date, new_remind_or_not, new_reminder_period, new_user_name
+    try:
+        new_entry = str(message.text).split('/')
+        new_birthday_name = new_entry[0]
+        new_birthday_date = new_entry[1]
+
+        keyboard = types.InlineKeyboardMarkup();  # наша клавиатура
+        key_yes = types.InlineKeyboardButton(text='Записать', callback_data='yes')  # кнопка «Да»
+        keyboard.add(key_yes);  # добавляем кнопку в клавиатуру
+        key_no = types.InlineKeyboardButton(text='Отмена', callback_data='no');
+        keyboard.add(key_no);
+
+        question = '👤: ' + new_birthday_name + '\n📆: ' + new_birthday_date
+
+        new_entry_id = bot.send_message(message.from_user.id, text=question, reply_markup=keyboard).id
 
 
-def birthday_name(message):
-    global new_birthday_name
-    if message.text != '':
-        new_birthday_name = message.text
-        bot.send_message(message.from_user.id, 'Напиши день и месяц рождения в формате ДД.ММ. Например: 27.03')
-        bot.register_next_step_handler(message, birthday_date)  # следующий шаг – функция birthday_date
-    else:
-        bot.send_message(message.from_user.id, 'Имя именника незаполненно, давай сначала')
-        start(message)
+    except:
+        bot.send_message(message.from_user.id, error_message)
+        bot.register_next_step_handler(message, start)  # следующий шаг – функция start
 
 
-def birthday_date(message):
-    global new_birthday_date
-    if message.text != '' and len(message.text) == 5 and str(message.text)[2] == '.':
-        if str(message.text).split('.')[0].isdigit() and str(message.text).split('.')[1].isdigit():
-            new_birthday_date = message.text
-            # bot.send_message(message.from_user.id, 'Нужно ли напомнить о дате заранее? Да/Нет')
-            # bot.register_next_step_handler(message, remind_or_not)  # следующий шаг – функция remind_or_not
-        else:
-            bot.send_message(message.from_user.id, 'Дата введена некорректно')
-            bot.send_message(message.from_user.id,
-                             'Дата введена некорректно\nНапиши день и месяц рождения в формате ДД.ММ. Например: 27.03')
-            birthday_date(message)
+def user_list(user_idd):
+    global connection, user_id
+    user_id = user_idd
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                sql = "SELECT * FROM `BirthdayReminderBot` WHERE `user_id`=%s"
+                cur.execute(sql, (user_id,))
+                result = cur.fetchall()
+                # print(result)
+                for line in result:
+                    # print(line)
+                    # print(type(line))
+                    # print(line['birthday_name'])
+                    # for key, value in line.items:
+                    #     print(value)
+                    # print('тест' + result)
 
-    # def remind_or_not(message):
-    #     global new_remind_or_not
-    #     if str(message.text).lower() == 'Да':
-    #         new_remind_or_not = True
-    #     bot.send_message(message.from_user.id, 'За сколько дней напомнить?')
-    #     bot.register_next_step_handler(message, reminder_period)  # следующий шаг – функция birthday_date
-    #
-    #
-    # def reminder_period(message):
-    #     global new_reminder_period
-    #     if int(message.text) > 0:
-    #         new_reminder_period = int(message.text)
-    #     else:
+                    list_line = '🆔: `' + line['id'] + '`' + '\n' + '👤: ' + line['birthday_name'] + '\n📆: ' + line[
+                        'birthday_date']
 
-    keyboard = types.InlineKeyboardMarkup();  # наша клавиатура
-    key_yes = types.InlineKeyboardButton(text='Да', callback_data='yes')  # кнопка «Да»
-    keyboard.add(key_yes);  # добавляем кнопку в клавиатуру
-    key_no = types.InlineKeyboardButton(text='Нет', callback_data='no');
-    keyboard.add(key_no);
-
-    question = '👤: ' + new_birthday_name + '\n📆: ' + new_birthday_date
-
-    bot.send_message(message.from_user.id, text=question, reply_markup=keyboard)
+                    bot.send_message(user_id, list_line, parse_mode='MarkDown')
+    except:
+        bot.send_message(user_id, error_message)
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
-    # global new_birthday_name, new_birthday_date, new_user_name
+    global new_entry_id, new_birthday_name, new_birthday_date, new_user_name, connection
     if call.data == "yes":  # call.data это callback_data, которую мы указали при объявлении кнопки
         if new_user_name != '' or new_birthday_name != '' or new_birthday_date != '':
 
-            # new_birthday_name = ''
-            # new_birthday_date = ''
-            # new_remind_or_not = False
-            # new_reminder_period = 0
-            # new_user_name = ''
-
-            connection = pymysql.connect(host='31.31.198.35',
-                                         user='u1771772_default',
-                                         password='56f6hDDRxt96FSvu',
-                                         database='u1771772_default',
-                                         cursorclass=pymysql.cursors.DictCursor)
-
             with connection:
                 with connection.cursor() as cursor:
-                    # Create a new record
-                    # sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
-                    sql = "INSERT INTO `BirthdayReminderBot` (`user_id`, `birthday_name`, `birthday_date`, `user_name`) VALUES (%s, %s, %s, %s)"
+                    sql = "INSERT INTO `BirthdayReminderBot` (`id`, `user_id`, `birthday_name`, `birthday_date`, `user_name`) VALUES (%s, %s, %s, %s, %s)"
                     cursor.execute(sql, (
-                        call.message.chat.id, new_birthday_name, new_birthday_date, ('@' + new_user_name)))
-
-                # connection is not autocommit by default. So you must commit to save
-                # your changes.
+                        new_entry_id, call.message.chat.id, new_birthday_name, new_birthday_date,
+                        ('@' + new_user_name)))
                 connection.commit()
 
-            bot.send_message(call.message.chat.id, 'Я всё запомнил')
+            new_user_name, new_birthday_name, new_birthday_date = '', '', ''
+
+            bot.send_message(call.message.chat.id, 'Я всё запомнил!')
 
         else:
-            bot.send_message(call.message.chat.id, 'Не заполнено имя или дата. Давай сначала')
+            new_user_name, new_birthday_name, new_birthday_date = '', '', ''
+            bot.send_message(call.message.chat.id, error_message)
 
     elif call.data == "no":
-        bot.send_message(call.message.chat.id, 'Тогда давай сначала')
-
-    bot.send_message(call.message.chat.id, help_message)
-
-    # repeat_start(call.message.chat.id)
+        if new_user_name != '' or new_birthday_name != '' or new_birthday_date != '':
+            bot.send_message(call.message.chat.id, 'Отменил.')
+            bot.send_message(call.message.chat.id, help_message)
 
 
-# def repeat_start(call):
-#     bot.send_message(call.message.chat.id, help_message)
-
-# bot.register_next_step_handler(message, birthday_name)  # следующий шаг – функция birthday_name
-
-
-# new_birthday_name = ''
-# new_birthday_date = ''
-# new_remind_or_not = False
-# new_reminder_period = 0
-
-# user_id +
-# birthday_name +
-# birthday_user_name -
-# birthday_date +
-# remind_or_not +
-# reminder_period +
-# chat_id
-# text
-# group_id
-# user_name
-
-# def get_new_record(message):
-#     new_name = str(message.text).split('/')[0]
-#     new_date = str(message.text).split('/')[1]
-#
-#     new_record = bot.send_message(message.from_user.id, ('👤: ' + new_name + '\n📆: ' + new_date))
-#     new_record_id = new_record.id
-#     new_record_text = new_record.text
-#
-#     print(new_record_id)
-#     print(new_record_text)
+# schedule.every().day.at("00:15").do(remind_congratulate)
 
 
 if __name__ == '__main__':
@@ -196,5 +153,9 @@ if __name__ == '__main__':
     while True:
         try:  # добавляем try для бесперебойной работы
             bot.polling(none_stop=True)  # запуск бота
+            # current_time = time.strftime('%H:%M', time.localtime())
+            # if current_time == '00:40':
+            #     remind_congratulate()
         except:
             time.sleep(10)  # в случае падения
+
