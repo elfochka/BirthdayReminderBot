@@ -1,0 +1,101 @@
+17:41:58 : 142351451: @Elfochkaa: start - Start
+17:41:58 : 142351451: @Elfochkaa: start - Done
+17:42:05 : 142351451: @Elfochkaa: start - Start
+17:42:05 : 142351451: @Elfochkaa:/add - Done
+17:42:05 : 142351451: @Elfochkaa: start - Done
+17:42:13 : 142351451: @Elfochkaa: add_new_entry - Start
+17:42:13 : 142351451: @Elfochkaa: add_new_entry - Processing
+17:42:13 : 142351451: @Elfochkaa: keyboard - Done
+17:42:13 : 142351451: @Elfochkaa: add_new_entry - Done
+17:42:31 : 142351451: @Elfochkaa: callback_worker - Start
+17:42:31 : 142351451: @Elfochkaa: cursor_add.execute - Done
+17:42:31 : 142351451: @Elfochkaa: connection.commit() - Done
+17:42:32 : 142351451: @: callback_worker - Done
+17:43:14 : : @: callback_worker - Start
+17:43:14 : : @: callback_worker - Done
+17:43:19 : 142351451: @Elfochkaa: start - Start
+17:43:20 : 142351451: @Elfochkaa: /list - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - Start
+17:43:20 : 142351451: @Elfochkaa: user_list - connection - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - list_line - Done
+17:43:20 : 142351451: @Elfochkaa: user_list - Done
+17:43:20 : 142351451: @Elfochkaa: start - Done
+17:44:35 : 142351451: @Elfochkaa: start - Start
+17:44:35 : 142351451: @Elfochkaa: /list - Done
+17:44:35 : 142351451: @Elfochkaa: user_list - Start
+17:44:35 : 142351451: @Elfochkaa: user_list - list_line id# 919 - Done
+17:44:35 : 142351451: @Elfochkaa: user_list - list_line id# 932 - Done
+17:44:35 : 142351451: @Elfochkaa: user_list - list_line id# 986 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - list_line id# 1165 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - list_line id# 1170 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - list_line id# 1172 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - list_line id# 1173 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - list_line id# 1174 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - list_line id# 1175 - Done
+17:44:36 : 142351451: @Elfochkaa: user_list - Done
+17:44:36 : 142351451: @Elfochkaa: start - Done
+17:44:50 : 142351451: @Elfochkaa: start - Start
+17:44:50 : 142351451: @Elfochkaa: start - Done
+17:44:54 : 142351451: @Elfochkaa: start - Start
+17:44:55 : 142351451: @Elfochkaa:/add - Done
+17:44:55 : 142351451: @Elfochkaa: start - Done
+17:45:03 : 142351451: @Elfochkaa: add_new_entry - Start
+17:45:03 : 142351451: @Elfochkaa: add_new_entry - Processing
+17:45:03 : 142351451: @Elfochkaa: keyboard - Done
+17:45:03 : 142351451: @Elfochkaa: add_new_entry - PreDone
+17:45:05 : 142351451: @Elfochkaa: callback_worker - Start
+17:45:05 : 142351451: @Elfochkaa: callback_worker - Done
+17:47:33 : 142351451: @Elfochkaa: start - Start
+17:47:33 : 142351451: @Elfochkaa: /list - Done
+17:47:33 : 142351451: @Elfochkaa: user_list - Start
+17:47:34 : 142351451: @Elfochkaa: user_list - Done
+17:47:34 : 142351451: @Elfochkaa: start - Done
+17:47:36 : 142351451: @Elfochkaa: start - Start
+17:47:36 : 142351451: @Elfochkaa:/add - Done
+17:47:36 : 142351451: @Elfochkaa: start - Done
+17:47:38 : 142351451: @Elfochkaa: add_new_entry - Start
+17:47:38 : 142351451: @Elfochkaa: add_new_entry - Processing
+17:47:38 : 142351451: @Elfochkaa: keyboard - Done
+17:47:38 : 142351451: @Elfochkaa: add_new_entry - PreDone
+17:47:40 : 142351451: @Elfochkaa: callback_worker - Start
+17:47:40 : 142351451: @Elfochkaa: cursor_add.execute - Done
+17:47:40 : 142351451: @Elfochkaa: connection.commit() - Done
+17:47:40 : 142351451: @: callback_worker - Done
+17:56:07 : 142351451: @Elfochkaa: start - Start
+17:56:07 : 142351451: @Elfochkaa: start - Done
+17:56:09 : 142351451: @Elfochkaa: start - Start
+17:56:09 : 142351451: @Elfochkaa:/add - Done
+17:56:09 : 142351451: @Elfochkaa: start - Done
+17:56:18 : 142351451: @Elfochkaa: add_new_entry - Start
+17:56:18 : 142351451: @Elfochkaa: add_new_entry - Processing
+17:56:18 : 142351451: @Elfochkaa: keyboard - Done
+17:56:18 : 142351451: @Elfochkaa: add_new_entry - PreDone
+18:02:46 : 142351451: @Elfochkaa: start - Start
+18:02:46 : 142351451: @Elfochkaa: start - Done
+18:02:48 : 142351451: @Elfochkaa: start - Start
+18:02:48 : 142351451: @Elfochkaa:/add - Done
+18:02:48 : 142351451: @Elfochkaa: start - Done
+18:02:52 : 142351451: @Elfochkaa: add_new_entry - Start
+18:02:52 : 142351451: @Elfochkaa: add_new_entry - Processing
+18:02:52 : 142351451: @Elfochkaa: keyboard - Done
+18:02:52 : 142351451: @Elfochkaa: add_new_entry - PreDone
+21:40:41 : 142351451: @Elfochkaa: Global except time.sleep(15) - Done
+04.09.22 21:46:49 : 142351451: @Elfochkaa: start - Start
+04.09.22 21:46:49 : 142351451: @Elfochkaa:/add - Done
+04.09.22 21:46:49 : 142351451: @Elfochkaa: start - Done
+04.09.22 21:48:56 : 142351451: @Elfochkaa: add_new_entry - Start
+04.09.22 21:48:56 : 142351451: @Elfochkaa: add_new_entry - Processing
+04.09.22 21:48:56 : 142351451: @Elfochkaa: keyboard - Done
+04.09.22 21:48:57 : 142351451: @Elfochkaa: add_new_entry - PreDone
+04.09.22 21:48:58 : 142351451: @Elfochkaa: callback_worker - Start
+04.09.22 21:48:58 : 142351451: @Elfochkaa: cursor_add.execute - Done
+04.09.22 21:48:58 : 142351451: @Elfochkaa: connection.commit() - Done
+04.09.22 21:48:58 : 142351451: @: callback_worker - Done
