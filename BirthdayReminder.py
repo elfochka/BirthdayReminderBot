@@ -2,10 +2,11 @@ import telebot
 import time
 import pymysql.cursors
 from telebot import types
+import datetime
 
 print('@BirthdayReminderBot запущен')
 
-bot = telebot.TeleBot("5464014913:AAEW7TYzUvNurSjsIT4xwuwf7KOKogmODIQ")  # токен бота
+bot = telebot.TeleBot("5407469548:AAH66oGKqUE5PWm-dOGCixXk0sZWRMlyglE")  # токен бота 5464014913:AAEW7TYzUvNurSjsIT4xwuwf7KOKogmODIQ
 
 new_entry_id = ''
 new_birthday_name = ''
@@ -140,9 +141,6 @@ def remind_congratulate():
 
     now_date = time.strftime('%d.%m', time.localtime())
 
-    # global user_id, new_user_name
-    #
-    # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - connection - Done')
 
     with connection_remind_congratulate:
         with connection_remind_congratulate.cursor() as cursor_remind_congratulate:
@@ -151,8 +149,6 @@ def remind_congratulate():
             result = cursor_remind_congratulate.fetchall()
 
             my_log('remind_congratulate - result - Done')
-            # print(now_date)
-            # print('nen' + str(result))
             for line in result:
                 my_log('remind_congratulate - ' + now_date + ' - Done')
 
@@ -161,7 +157,26 @@ def remind_congratulate():
 
                 bot.send_message(line['user_id'], congratulate_text, parse_mode='MarkDown')
 
-    # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - Done')
+        remind_period = [1, 3, 7]
+
+        for i in remind_period:
+            date_reminder = datetime.datetime.today() + datetime.timedelta(days=i)
+            date_reminder = date_reminder.strftime('%d.%m')
+
+            with connection_remind_congratulate.cursor() as cursor_remind_before:
+                sql = "SELECT * FROM `BirthdayReminderBot` WHERE `birthday_date`=%s"
+                cursor_remind_before.execute(sql, (str(date_reminder),))
+                result = cursor_remind_before.fetchall()
+
+                my_log('cursor_remind_before - result - Done')
+                for line in result:
+                    my_log('cursor_remind_before - ' + now_date + ' - Done')
+
+                    congratulate_text = 'Не забудь, ' + line['birthday_date'] + ' отмечает свой День Рождения *' + line[
+                        'birthday_name'] + '*'
+
+                    bot.send_message(line['user_id'], congratulate_text, parse_mode='MarkDown')
+
 
     time.sleep(100)
 
