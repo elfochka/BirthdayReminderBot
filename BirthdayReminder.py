@@ -48,10 +48,13 @@ def start(message):
         bot.register_next_step_handler(message, add_new_entry)  # следующий шаг – функция add_new_entry
     elif message.text == '/list':
         user_id = message.from_user.id
-        bot.send_message(message.from_user.id, 'Все твои записи:')
+        bot.send_message(message.from_user.id, 'Список твоих записей:')
         my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + '/list - Done')
-
-        user_list()
+        user_list(str(user_id))
+    elif message.text == '/del':
+        bot.send_message(message.from_user.id, 'Скопируй из спика и пришли номер id записи, которую нужно удалить.')
+        my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + '/del - Start')
+        bot.register_next_step_handler(message, del_entry)  # следующий шаг – функция del_entry
 
     else:
         bot.send_message(message.from_user.id, help_message)
@@ -94,7 +97,7 @@ def add_new_entry(message):
     my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'add_new_entry - PreDone')
 
 
-def user_list():
+def user_list(list_user_id):
     connection_list = pymysql.connect(host='31.31.198.35',
                                       user='u1771772_default',
                                       password='56f6hDDRxt96FSvu',
@@ -102,7 +105,7 @@ def user_list():
                                       cursorclass=pymysql.cursors.DictCursor)
 
     global user_id, new_user_name
-
+    user_id = list_user_id
     my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'user_list - Start')
 
     try:
@@ -117,11 +120,9 @@ def user_list():
                     list_line = '🆔: `' + str(line['id']) + '`\n' + '👤: *' + str(
                         line['birthday_name']) + '*\n📆: ' + str(line[
                                                                      'birthday_date'])
-                    # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'user_list - list_line id# ' + str(
-                    #     line['id']) + ' - Done')
 
                     bot.send_message(user_id, list_line, parse_mode='MarkDown')
-
+        bot.send_message(user_id, 'Для удаления записи введите /del')
 
     except:
         bot.send_message(user_id, error_message)
@@ -130,6 +131,7 @@ def user_list():
 
 
 def remind_congratulate():
+    my_log('remind_congratulate - Start')
     connection_remind_congratulate = pymysql.connect(host='31.31.198.35',
                                                      user='u1771772_default',
                                                      password='56f6hDDRxt96FSvu',
@@ -138,9 +140,9 @@ def remind_congratulate():
 
     now_date = time.strftime('%d.%m', time.localtime())
 
-    global user_id, new_user_name
-
-    my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - connection - Done')
+    # global user_id, new_user_name
+    #
+    # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - connection - Done')
 
     with connection_remind_congratulate:
         with connection_remind_congratulate.cursor() as cursor_remind_congratulate:
@@ -148,21 +150,65 @@ def remind_congratulate():
             cursor_remind_congratulate.execute(sql, (str(now_date),))
             result = cursor_remind_congratulate.fetchall()
 
-            my_log(str(user_id) + ': @' + str(
-                new_user_name) + ':' + 'remind_congratulate - result - Done' + result)
-
+            my_log('remind_congratulate - result - Done')
+            # print(now_date)
+            # print('nen' + str(result))
             for line in result:
-                my_log(
-                    str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - ' + now_date + ' - Done')
+                my_log('remind_congratulate - ' + now_date + ' - Done')
 
                 congratulate_text = 'Сегодня ' + line['birthday_date'] + ' отмечает свой День Рождения *' + line[
                     'birthday_name'] + '*'
 
                 bot.send_message(line['user_id'], congratulate_text, parse_mode='MarkDown')
 
-    my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - Done')
+    # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'remind_congratulate - Done')
 
     time.sleep(100)
+
+
+def del_entry(message):
+    global user_id, new_user_name
+
+    user_id = message.from_user.id
+
+    connection_del_entry = pymysql.connect(host='31.31.198.35',
+                                           user='u1771772_default',
+                                           password='56f6hDDRxt96FSvu',
+                                           database='u1771772_default',
+                                           cursorclass=pymysql.cursors.DictCursor)
+    my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'del_entry - connection - Done')
+
+    try:
+        my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'del_entry - connection - try')
+
+        with connection_del_entry:
+
+            my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'del_entry - connection - connection_del_entry')
+
+            with connection_del_entry.cursor() as cursor_del_entry:
+                my_log(
+                    str(user_id) + ': @' + str(
+                        new_user_name) + ': ' + 'del_entry - connection - '
+                                                'with connection_del_entry.cursor() as cursor_del_entry' + message.text)
+
+                sql_del = "DELETE FROM `BirthdayReminderBot` WHERE `id`=%s"
+                cursor_del_entry.execute(sql_del, (message.text,))
+
+                my_log(str(user_id) + ': @' + str(
+                    new_user_name) + ': ' + 'del_entry - cursor_del_entry - Done ' + str(message.text) + ' : ' + str(
+                    message.from_user.id))
+
+            connection_del_entry.commit()
+
+            my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'del_entry - Done')
+            bot.send_message(message.from_user.id, 'Удалил запись')
+
+            user_list(str(user_id))
+
+    except:
+        bot.send_message(user_id, error_message)
+
+    my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'user_list - Done')
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -196,8 +242,6 @@ def callback_worker(call):
             new_user_name, new_birthday_name, new_birthday_date = '', '', ''
 
             bot.send_message(call.message.chat.id, 'Я всё запомнил!')
-
-
 
         else:
             new_user_name, new_birthday_name, new_birthday_date = '', '', ''
