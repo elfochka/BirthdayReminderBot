@@ -569,3 +569,44 @@
 09.09.22 23:18:00 : cursor_remind_before - result - Done
 09.09.22 23:18:00 : cursor_remind_before - 09.09 - Done
 09.09.22 23:18:01 : cursor_remind_before - result - Done
+09.09.22 23:25:34 : : @: Global except time.sleep(15) - Done
+09.09.22 23:40:44 : 142351451: @Elfochkaa: start - Start
+09.09.22 23:40:44 : 142351451: @Elfochkaa: start - Start
+09.09.22 23:40:44 : 142351451: @Elfochkaa: start - Done
+09.09.22 23:40:44 : 142351451: @Elfochkaa: start - Done
+09.09.22 23:43:00 : remind_congratulate - Start
+09.09.22 23:43:00 : remind_congratulate - result - Done
+09.09.22 23:43:00 : cursor_remind_before - result - Done
+09.09.22 23:43:00 : cursor_remind_before - result - Done
+09.09.22 23:43:00 : cursor_remind_before - 09.09 - Done
+09.09.22 23:43:00 : cursor_remind_before - result - Done
+09.09.22 23:46:00 : remind_congratulate - Start
+09.09.22 23:46:00 : remind_congratulate - result - Done
+09.09.22 23:46:00 : cursor_remind_before - result - Done
+09.09.22 23:46:00 : cursor_remind_before - result - Done
+09.09.22 23:46:00 : cursor_remind_before - 09.09 - Done
+09.09.22 23:46:00 : cursor_remind_before - result - Done
+09.09.22 23:47:00 : remind_congratulate - Start
+09.09.22 23:47:00 : remind_congratulate - result - Done
+09.09.22 23:47:00 : cursor_remind_before - result - Done
+09.09.22 23:47:00 : cursor_remind_before - result - Done
+09.09.22 23:47:00 : cursor_remind_before - 09.09 - Done
+09.09.22 23:47:00 : cursor_remind_before - result - Done
+09.09.22 23:48:00 : remind_congratulate - Start
+09.09.22 23:48:00 : remind_congratulate - result - Done
+09.09.22 23:48:00 : cursor_remind_before - result - Done
+09.09.22 23:48:00 : cursor_remind_before - result - Done
+09.09.22 23:48:00 : cursor_remind_before - 09.09 - Done
+09.09.22 23:48:00 : cursor_remind_before - result - Done
+09.09.22 23:51:00 : remind_congratulate - Start
+09.09.22 23:51:00 : remind_congratulate - result - Done
+09.09.22 23:51:00 : remind_congratulate - 09.09 - Done
+09.09.22 23:51:00 : cursor_remind_before - result - Done
+09.09.22 23:51:00 : cursor_remind_before - result - Done
+09.09.22 23:51:00 : cursor_remind_before - result - Done
+09.09.22 23:52:00 : remind_congratulate - Start
+09.09.22 23:52:00 : remind_congratulate - result - Done
+09.09.22 23:52:00 : remind_congratulate - 09.09 - Done
+09.09.22 23:52:00 : cursor_remind_before - result - Done
+09.09.22 23:52:00 : cursor_remind_before - result - Done
+09.09.22 23:52:00 : cursor_remind_before - result - Done

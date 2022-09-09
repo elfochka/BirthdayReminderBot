@@ -157,6 +157,9 @@ def remind_congratulate():
 
                 bot.send_message(line['user_id'], congratulate_text, parse_mode='MarkDown')
 
+                if line['chat_id'] != '0' or line['chat_id'] != '':
+                    bot.send_message(line['chat_id'], congratulate_text, parse_mode='MarkDown')
+
         remind_period = [1, 3, 7]
 
         for i in remind_period:
