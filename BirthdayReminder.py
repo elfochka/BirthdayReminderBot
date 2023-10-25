@@ -16,6 +16,7 @@ HOST = os.getenv('HOST')
 USER = os.getenv('USER')
 PASSWORD = os.getenv('PASSWORD')
 DATABASE = os.getenv('DATABASE')
+MY_ID = os.getenv('MY_ID')
 
 # bot = telebot.TeleBot("5407469548:AAHpPNs0W8_4DWOUP3gNm1wtIkKnACxp9iY")
 # Тестовый БОТ Super Bot
@@ -207,7 +208,7 @@ def remind_congratulate():
                                                      cursorclass=pymysql.cursors.DictCursor)
 
     now_date = time.strftime('%d.%m', time.localtime())
-    bot.send_message('142351451', 'Проверка связи {}'.format(now_date), parse_mode='MarkDown')
+    bot.send_message(MY_ID, 'Проверка связи {}'.format(now_date), parse_mode='MarkDown')
 
     with connection_remind_congratulate:
         with connection_remind_congratulate.cursor() as cursor_remind_congratulate:

@@ -1,7 +1,7 @@
 import time
 from BirthdayReminder import remind_congratulate
 
-
+# таймер для каждодневного напоминания
 while True:
     try:  # добавляем try для бесперебойной работы
         current_time = time.strftime('%H:%M:%S', time.localtime())
