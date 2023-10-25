@@ -3,11 +3,24 @@ import time
 import pymysql.cursors
 from telebot import types
 import datetime
+import os
+from dotenv import load_dotenv, find_dotenv
 
-print('@BirthdayReminderBot запущен')
+if not find_dotenv():
+    exit('Переменные окружения не загружены т.к отсутствует файл .env')
+else:
+    load_dotenv()
 
-# bot = telebot.TeleBot("5407469548:AAHpPNs0W8_4DWOUP3gNm1wtIkKnACxp9iY")  # Тестовый БОТ Super Bot
-bot = telebot.TeleBot("5464014913:AAEW7TYzUvNurSjsIT4xwuwf7KOKogmODIQ")  # Рабочий BirthdayReminderBot
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+HOST = os.getenv('HOST')
+USER = os.getenv('USER')
+PASSWORD = os.getenv('PASSWORD')
+DATABASE = os.getenv('DATABASE')
+
+# bot = telebot.TeleBot("5407469548:AAHpPNs0W8_4DWOUP3gNm1wtIkKnACxp9iY")
+# Тестовый БОТ Super Bot
+bot = telebot.TeleBot(BOT_TOKEN)
+# Рабочий BirthdayReminderBot
 
 new_entry_id = ''
 new_birthday_name = ''
@@ -146,10 +159,10 @@ def add_new_entry(message):
 
 # Список дней рождений юзера
 def user_list(list_user_id):
-    connection_list = pymysql.connect(host='31.31.198.35',
-                                      user='u1771772_default',
-                                      password='56f6hDDRxt96FSvu',
-                                      database='u1771772_default',
+    connection_list = pymysql.connect(host=HOST,
+                                      user=USER,
+                                      password=PASSWORD,
+                                      database=DATABASE,
                                       cursorclass=pymysql.cursors.DictCursor)
 
     global user_id, new_user_name
@@ -187,10 +200,10 @@ def user_list(list_user_id):
 # обработка напоминания о сегодняшнем или предстоящем ДР
 def remind_congratulate():
     # my_log('remind_congratulate - Start')
-    connection_remind_congratulate = pymysql.connect(host='31.31.198.35',
-                                                     user='u1771772_default',
-                                                     password='56f6hDDRxt96FSvu',
-                                                     database='u1771772_default',
+    connection_remind_congratulate = pymysql.connect(host=HOST,
+                                                     user=USER,
+                                                     password=PASSWORD,
+                                                     database=DATABASE,
                                                      cursorclass=pymysql.cursors.DictCursor)
 
     now_date = time.strftime('%d.%m', time.localtime())
@@ -254,10 +267,10 @@ def del_entry(message):
 
     user_id = message.from_user.id
 
-    connection_del_entry = pymysql.connect(host='31.31.198.35',
-                                           user='u1771772_default',
-                                           password='56f6hDDRxt96FSvu',
-                                           database='u1771772_default',
+    connection_del_entry = pymysql.connect(host=HOST,
+                                           user=USER,
+                                           password=PASSWORD,
+                                           database=DATABASE,
                                            cursorclass=pymysql.cursors.DictCursor)
     # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'del_entry - connection - Done')
 
@@ -304,10 +317,10 @@ def edit_entry(message):
     user_id = message.from_user.id
     message_text = str(message.text).split('/')
 
-    connection_edit_entry = pymysql.connect(host='31.31.198.35',
-                                            user='u1771772_default',
-                                            password='56f6hDDRxt96FSvu',
-                                            database='u1771772_default',
+    connection_edit_entry = pymysql.connect(host=HOST,
+                                            user=USER,
+                                            password=PASSWORD,
+                                            database=DATABASE,
                                             cursorclass=pymysql.cursors.DictCursor)
     # my_log(str(user_id) + ': @' + str(new_user_name) + ': ' + 'edit_entry - connection - Done')
 
@@ -355,10 +368,10 @@ def get_chat_id(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
-    connection_add = pymysql.connect(host='31.31.198.35',
-                                     user='u1771772_default',
-                                     password='56f6hDDRxt96FSvu',
-                                     database='u1771772_default',
+    connection_add = pymysql.connect(host=HOST,
+                                     user=USER,
+                                     password=PASSWORD,
+                                     database=DATABASE,
                                      cursorclass=pymysql.cursors.DictCursor)
 
     global new_birthday_name, new_birthday_date, new_user_name, user_id
