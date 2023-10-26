@@ -291,7 +291,6 @@ def edit_entry(message):
 
 
 def get_chat_id(message):
-    print(message)
     get_chat_id_message = 'Ваш id: `' + str(message.from_user.id) + '`\nПереслано от *' + str(
         message.forward_from_chat.title) + '*, id: `' + str(
         message.forward_from_chat.id) + '`'
